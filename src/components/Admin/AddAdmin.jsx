@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
-import Section from './Section';
-import { BottomLine } from './design/Hero';
+import { useNavigate } from 'react-router-dom';
+import Section from '../Section';
 
-const Registration = () => {
+
+const AddAdmin = () => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -20,7 +20,7 @@ const Registration = () => {
     const { name, email, password, reenterPassword, phoneNo } = formData;
 
     const onChange = (e) => {
-        setErrors("")
+        setErrors({});
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
@@ -57,7 +57,7 @@ const Registration = () => {
         }
 
         try {
-            const res = await axios.post('http://localhost:8080/users/signup', {
+            const res = await axios.post('http://localhost:8080/admin', {
                 name,
                 email,
                 password,
@@ -65,19 +65,28 @@ const Registration = () => {
             });
 
             setMessage(res.data.msg);
-            navigate('/'); 
+            setFormData({
+                name: '',
+                email: '',
+                password: '',
+                reenterPassword: '',
+                phoneNo: ''
+            });
+            alert("admin added successfuly !")
+            navigate('/admindashboard'); // Redirect to /home on success
         } catch (err) {
             setMessage(err.response?.data?.msg || 'Server error');
         }
+
     };
 
     return (
         <>
-            <Section crosses>
+           <Section crosses>
                 <div className="container relative z-2 max-w-[68rem] m-auto lg:flex lg:justify-between">
                     <div className="max-w-[32.875rem] mx-auto mb-12 text-center md:mb-16 lg:flex lg:flex-col lg:justify-around lg:max-w-[23.75rem] lg:m-0 lg:text-left">
-                        <h2 className="h2">Create Your Account</h2>
-                        <p className="hidden body-2 mt-4 text-n-4 md:block">Get started with [TurfTime] and unlock exclusive deals on turf bookings</p>
+                        <h2 className="h2">Register a New Admin User</h2>
+                        <p className="hidden body-2 mt-4 text-n-4 md:block">Enter the required information to add a new administrator, granting them access to manage and maintain your website, including managing user accounts, creating content, and configuring settings</p>
                     </div>
                     <form
                         className="relative max-w-[23.5rem] mx-auto p-0.25 bg-conic-gradient rounded-3xl lg:flex-1 lg:max-w-[27.5rem] lg:m-0 xl:mr-12"
@@ -130,7 +139,7 @@ const Registration = () => {
                             <div className="relative mb-4 lg:mb-5">
                                 <input
                                     className="w-full h-14 pl-12 bg-transparent border-b border-n-1/15 font-light placeholder:text-n-4 outline-none transition-colors"
-                                    placeholder="Phone Number"
+                                    placeholder="phoneNo Number"
                                     type="tel"
                                     name="phoneNo"
                                     value={phoneNo}
@@ -159,7 +168,7 @@ const Registration = () => {
                             </button>
                             {message && <div className="mt-6 text-sm text-red-500">{message}</div>}
                             <div className="mt-6 flex justify-between items-center text-sm text-n-4">
-                                <Link to={'/signin'} className="hover:text-color-1">Already have an account? Sign in</Link>
+                                <a href="#" className="hover:text-color-1">Already have an account? Sign in</a>
                             </div>
                             <div className="mt-10">
                                 <div className="flex justify-center">
@@ -199,4 +208,4 @@ const Registration = () => {
     );
 }
 
-export default Registration;
+export default AddAdmin;

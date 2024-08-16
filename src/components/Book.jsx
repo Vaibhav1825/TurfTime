@@ -1,98 +1,367 @@
-import React from 'react'
-import Section from './Section'
+import React, { useState, useEffect } from "react";
+import Section from "./Section";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Book = () => {
-    return (
-        <>
-            <Section
+  const [token, setToken] = useState(
+    JSON.parse(sessionStorage.getItem("token")) || ""
+  );
+  let paymentData = {};
+  const today = new Date().toISOString().split("T")[0];
+  const [message, setMessage] = useState("");
+  const [orderID, setOrderID] = useState("");
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    coupon: "",
+    date: "",
+    slot: "",
+    sport: "",
+    price: "",
+  });
+  const [couponData, setCouponData] = useState([]);
+  const [error, setError] = useState("");
 
-                crosses
+  useEffect(() => {
+    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+    if (!isLoggedIn) {
+      navigate("/signin");
+    } else {
+      const user = JSON.parse(sessionStorage.getItem("User")) || {};
+      setFormData((prevData) => ({
+        ...prevData,
+        name: user.name || "",
+        email: user.email || "",
+      }));
+      fetchCoupons();
+    }
+  }, [navigate]);
 
-            >
-                <div className="container relative z-2 max-w-[68rem] m-auto lg:flex lg:justify-between">
-                    <div
-                        className="max-w-[32.875rem] mx-auto mb-12 text-center md:mb-16 lg:flex lg:flex-col lg:justify-around lg:max-w-[23.75rem] lg:m-0 lg:text-left">
-                        <h2 className="h2">Join the AI revolution with Brainwave</h2>
-                        <p className="hidden body-2 mt-4 text-n-4 md:block">Get started with Brainwave - AI chat app today and
-                            experience the power of AI in your conversations!</p>
-                    </div>
-                    <form
-                        className="relative max-w-[23.5rem] mx-auto p-0.25 bg-conic-gradient rounded-3xl lg:flex-1 lg:max-w-[27.5rem] lg:m-0 xl:mr-12"
-                        action="">
-                        <div className="px-9 py-10 bg-n-8 rounded-[1.4375rem] lg:px-16 lg:py-[3.25rem]">
-                            <div className="relative mb-4 lg:mb-5">
-                              
-                                <input
-                                    className="w-full h-14 pl-12 bg-transparent border-b border-n-1/15 font-light placeholder:text-n-4 outline-none transition-colors focus:border-n-1/30"
-                                    placeholder="Email" type="text" />
-                            </div>
-                            <div className="relative mb-4 lg:mb-5">
-                              
-                                <input
-                                    className="w-full h-14 pl-12 bg-transparent border-b border-n-1/15 font-light placeholder:text-n-4 outline-none transition-colors focus:border-n-1/30"
-                                    placeholder="Password" type="text" />
-                            </div>
-                            <button
-                                className="button relative inline-flex items-center justify-center h-11 px-7 text-n-8 transition-colors hover:text-color-1 w-full">
-                                <span className="relative z-10">Sign in</span>
-                                <svg className="absolute top-0 left-0" width="21" height="44" viewBox="0 0 21 44">
-                                    <path fill="white" stroke="white" stroke-width="2"
-                                        d="M21,43.00005 L8.11111,43.00005 C4.18375,43.00005 1,39.58105 1,35.36365 L1,8.63637 C1,4.41892 4.18375,1 8.11111,1 L21,1">
-                                    </path>
-                                </svg>
-                                <svg className="absolute top-0 left-[1.3125rem] w-[calc(100%-2.625rem)]" height="44"
-                                    viewBox="0 0 100 44" preserveAspectRatio="none" fill="white">
-                                    <polygon fill="white" fill-rule="nonzero" points="100 0 100 44 0 44 0 0"></polygon>
-                                </svg>
-                                <svg className="absolute top-0 right-0" width="21" height="44" viewBox="0 0 21 44">
-                                    <path fill="white" stroke="white" stroke-width="2"
-                                        d="M0,43.00005 L5.028,43.00005 L12.24,43.00005 C16.526,43.00005 20,39.58105 20,35.36365 L20,16.85855 C20,14.59295 18.978,12.44425 17.209,10.99335 L7.187,2.77111 C5.792,1.62675 4.034,1 2.217,1 L0,1">
-                                    </path>
-                                </svg>
-                            </button>
-                            <div className="mt-10">
-                                <div className="caption mb-6 text-n-4 text-center">Or start your Brainwave with</div>
-                                <div className="flex justify-center">
-                                    <a className="flex items-center justify-center w-12 h-12 mx-3 border border-n-1/5 rounded-full transition-colors hover:border-n-1/15"
-                                        href="#">
-                                        <svg width="24" height="24">
-                                            <path fill="#757185"
-                                                d="M23.049 10h-10.5v4.5h5.951c-.951 3-3.3 4-5.999 4a6.5 6.5 0 0 1-5.33-2.768 6.5 6.5 0 0 1-.787-5.954 6.5 6.5 0 0 1 4.428-4.057 6.5 6.5 0 0 1 5.863 1.302l3.27-3.117a11 11 0 0 0-9.931-2.623 11 11 0 0 0-7.768 6.721A11 11 0 0 0 3.414 18.21 11 11 0 0 0 12.501 23c6.066 0 11.55-4 10.548-13z">
-                                            </path>
-                                        </svg>
-                                    </a>
-                                    <a className="flex items-center justify-center w-12 h-12 mx-3 border border-n-1/5 rounded-full transition-colors hover:border-n-1/15"
-                                        href="#">
-                                        <svg width="24" height="24">
-                                            <path fill="#757185"
-                                                d="M21.356 16.252c-1.338-.506-2.233-1.721-2.334-3.17-.099-1.412.593-2.666 1.851-3.355l1.046-.573-.747-.93c-1.255-1.563-3.051-2.497-4.804-2.497-1.215 0-2.058.318-2.735.574-.478.181-.855.323-1.269.323-.472 0-.938-.166-1.478-.358-.708-.252-1.51-.538-2.54-.538-1.99 0-3.997 1.188-5.237 3.098-1.851 2.849-1.343 7.734 1.208 11.616 1.011 1.538 2.428 3.305 4.435 3.323h.039c1.643 0 2.003-.876 3.598-.886 1.742.082 1.962.893 3.589.882 1.961-.018 3.375-1.771 4.499-3.484.664-1.007.921-1.534 1.438-2.678l.438-.97-.997-.377zM15.103 3.214c.65-.834 1.143-2.011.964-3.214-1.062.073-2.302.748-3.027 1.628-.658.799-1.201 1.983-.99 3.135 1.158.036 2.357-.656 3.053-1.549z">
-                                            </path>
-                                        </svg>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        {/* <div className="hidden absolute top-6 -right-12 bottom-6 xl:flex">
-                            <div className="w-6 bg-[#1B1B2E] rounded-r-3xl"></div>
-                            <div className="w-6 my-12 bg-[#1B1B2E]/50 rounded-r-3xl"></div>
-                        </div> */}
-                    </form>
-                </div>
+  const fetchCoupons = async () => {
+    const axiosConfig = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const response = await axios.get(
+        "http://localhost:8080/admin/coupons",
+        axiosConfig
+      );
+      console.log(response.data);
 
+      setCouponData(response.data);
+      setMessage(response.data.msg);
+    } catch (error) {
+      setMessage(error.response?.data?.msg || "Server error");
+      console.error("Error fetching coupons:", error);
+    }
+  };
 
+  const calculatePrice = (sport) => {
+    switch (sport) {
+      case "FOOTBALL":
+        return "2000";
+      case "HOCKEY":
+        return "1000";
+      case "KABADDI":
+        return "1000";
+      case "CRICKET":
+        return "2000";
+      default:
+        return "";
+    }
+  };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value.toUpperCase() }));
 
-                <div className="absolute inset-0">
-                  
-                    <img alt="Background" loading="lazy" width="1920" height="1080" decoding="async" data-nimg="1"
-                        className="inline-block align-top transition-opacity opacity-100 w-full h-full object-cover" src="https://images.unsplash.com/photo-1722196798537-3dec69228f54?w=3840&q=100&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyM3x8fGVufDB8fHx8fA%3D%3D"
-                        style={{ color: 'transparent' }} />
-                </div>
+    if (name === "sport") {
+      const price = calculatePrice(value);
+      setFormData((prevData) => ({
+        ...prevData,
+        price: price,
+        coupon: "",
+        error: "",
+      }));
+    }
 
+    if (name === "coupon") {
+      const matchingCoupon = couponData.find(
+        (coupon) => coupon.coupon === value.toUpperCase()
+      );
 
-            </Section>
-        </>
-    )
+      if (matchingCoupon) {
+        const sportPrice = calculatePrice(formData.sport);
+        const discountedPrice = sportPrice - matchingCoupon.price;
+        setFormData((prevData) => ({
+          ...prevData,
+          price: discountedPrice.toString(),
+        }));
+        setError(""); // Clear any previous error
+      } else if (value) {
+        setError("Invalid coupon");
+        setFormData((prevData) => ({
+          ...prevData,
+          price: calculatePrice(formData.sport),
+        }));
+      } else {
+        setError("");
+        setFormData((prevData) => ({
+          ...prevData,
+          price: calculatePrice(formData.sport),
+        }));
+      }
+    }
+  };
+
+  const fetchOrderID = async () => {
+    const price = formData.price 
+    console.log("order id ", price);
+    
+    const res = await axios.get(
+      `http://localhost:8080/payment/create-booking/${price}`
+    );
+
+    setOrderID(res.data.order_id);  
+    // handlePayment(res.data.key_id)
+    return res.data.key_id;
+  };
+
+  const bookingTurf= async()=>{
+    // let axiosConfig = {
+//     headers: {
+//         'Authorization': `Bearer ${token}`
+//     }
+// };
+
+const matchingCoupon = couponData.find(coupon => coupon.coupon === formData.coupon);
+const couponToSend = matchingCoupon ? formData.coupon : '';
+console.log(couponToSend)
+try {
+    
+    const response = await axios.post('http://localhost:8080/bookings',
+        {
+            name: formData.name,
+            email: formData.email,
+            coupon: couponToSend,
+            bookingDate: formData.date,
+            slot: formData.slot,
+            sport: formData.sport,
+            price: formData.price
+        }
+    );
+    setMessage(response.data.msg);
+    console.log('Booking successful:', response.data);
+    navigate('/thank-you');
+} catch (error) {
+    setMessage(err.response?.data?.msg || 'Server error');
+    console.error('Error booking:', error);
 }
+  }
 
-export default Book
+  const handlePayment = (keyId) => {
+ 
+  const price = formData.price * 100
+   console.log("in payment",price);
+   
+    const options = {
+      key: keyId,
+      amount: price,
+      currency: "INR",
+      name: "turf time",
+      description: "Test Transaction",
+      order_id: orderID,
+      handler: function (response) {
+        bookingTurf()
+        alert("Payment successful!");
+      },
+      prefill: {
+        name: "Customer Name",
+        email: "customer@example.com",
+        contact: "9999999999",
+      },
+      theme: {
+        color: "#3399cc",
+      },
+    };
+
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  };
+
+//   const verifyPayment = async () => {
+
+//     try{
+//         const axiosConfig = {
+//           headers: {
+//             Authorization: `Bearer ${token}`,
+//           },
+//         };
+//         const response = await axios.post(
+//           "http://localhost:8080/payment/verify",
+//           paymentData,
+//           axiosConfig
+//         );
+//     }catch(err){}
+//   };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const key_id = await fetchOrderID();
+      if (!key_id) return;
+      handlePayment(key_id);
+
+    //   verifyPayment();
+    } catch (err) {
+      setMessage("Error creating booking. Please try again later.");
+      return;
+    }
+  };
+
+  return (
+    <>
+      <Section crosses>
+        <div className="container relative z-2 max-w-[68rem] m-auto lg:flex lg:justify-between">
+          <div className="max-w-[32.875rem] mx-auto mb-12 text-center md:mb-16 lg:flex lg:flex-col lg:justify-around lg:max-w-[23.75rem] lg:m-0 lg:text-left">
+            <h2 className="h2">Book Your Turf Now</h2>
+            <p className="hidden body-2 mt-4 text-n-4 md:block">
+            Secure your spot and elevate your game with hassle-free turf booking at Turftime
+            </p>
+          </div>
+          <form
+            className="relative max-w-[23.5rem] mx-auto p-0.25 bg-conic-gradient rounded-3xl lg:flex-1 lg:max-w-[27.5rem] lg:m-0 xl:mr-12"
+            onSubmit={handleSubmit}
+          >
+            <div className="px-9 py-10 bg-n-8 rounded-[1.4375rem] lg:px-16 lg:py-[3.25rem]">
+              <div className="relative mb-4 lg:mb-5">
+                <input
+                  className="w-full h-14 pl-12 bg-transparent border-b border-n-1/15 font-light placeholder:text-n-4 outline-none transition-colors focus:border-n-1/30"
+                  placeholder="Name"
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  readOnly
+                />
+              </div>
+              <div className="relative mb-4 lg:mb-5">
+                <input
+                  className="w-full h-14 pl-12 bg-transparent border-b border-n-1/15 font-light placeholder:text-n-4 outline-none transition-colors focus:border-n-1/30"
+                  placeholder="Email"
+                  type="text"
+                  name="email"
+                  value={formData.email}
+                  readOnly
+                />
+              </div>
+
+              <div className="relative mb-4 lg:mb-5">
+                <input
+                  className="w-full h-14 pl-12 bg-transparent border-b border-n-1/15 font-light placeholder:text-n-4 outline-none transition-colors focus:border-n-1/30"
+                  placeholder="Date"
+                  type="date"
+                  name="date"
+                  value={formData.date}
+                  onChange={handleChange}
+                  min={today}
+                  required
+                />
+              </div>
+              <div className="relative mb-4 lg:mb-5">
+                <select
+                  className="w-full h-14 pl-12 bg-transparent border-b border-n-1/15 font-light placeholder:text-n-4 outline-none transition-colors focus:border-n-1/30"
+                  name="slot"
+                  value={formData.slot}
+                  onChange={handleChange}
+                  required
+                >
+                  <option className="text-neutral-950" value="" disabled>
+                    Select Slot
+                  </option>
+                  <option className="text-neutral-950" value="MORNING">
+                    (6:00 AM - 9:00 AM)
+                  </option>
+                  <option className="text-neutral-950" value="MORNING1">
+                    (9:00 AM - 12:00 Noon)
+                  </option>
+                  <option className="text-neutral-950" value="AFTERNOON">
+                    (12:00 Noon - 3:00 PM)
+                  </option>
+                  <option className="text-neutral-950" value="EVENING">
+                    (4:00 PM - 7:00 PM)
+                  </option>
+                  <option className="text-neutral-950" value="NIGHT">
+                    (7:00 PM - 10:00 PM)
+                  </option>
+                  <option className="text-neutral-950" value="NIGHT1">
+                    (10:00 PM - 1:00 AM)
+                  </option>
+                </select>
+              </div>
+              <div className="relative mb-4 lg:mb-5">
+                <select
+                  className="w-full h-14 pl-12 bg-transparent border-b border-n-1/15 font-light placeholder:text-n-4 outline-none transition-colors focus:border-n-1/30"
+                  name="sport"
+                  value={formData.sport}
+                  onChange={handleChange}
+                  required
+                >
+                  <option className="text-neutral-950" value="" disabled>
+                    Select Sport
+                  </option>
+                  <option className="text-neutral-950" value="FOOTBALL">
+                    Football
+                  </option>
+                  <option className="text-neutral-950" value="HOCKEY">
+                    Hockey
+                  </option>
+                  <option className="text-neutral-950" value="KABADDI">
+                    Kabaddi
+                  </option>
+                  <option className="text-neutral-950" value="CRICKET">
+                    Cricket
+                  </option>
+                </select>
+              </div>
+              <div className="relative mb-4 lg:mb-5">
+                <input
+                  className="w-full h-14 pl-12 bg-transparent border-b border-n-1/15 font-light placeholder:text-n-4 outline-none transition-colors focus:border-n-1/30"
+                  placeholder="Price"
+                  type="text"
+                  name="price"
+                  value={formData.price}
+                  readOnly
+                />
+              </div>
+              <div className="relative mb-4 lg:mb-5">
+                <input
+                  className="w-full h-14 pl-12 bg-transparent border-b border-n-1/15 font-light placeholder:text-n-4 outline-none transition-colors focus:border-n-1/30"
+                  placeholder="Coupon"
+                  type="text"
+                  name="coupon"
+                  value={formData.coupon}
+                  onChange={handleChange}
+                />
+                {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+              </div>
+              <button
+                type="submit"
+                className="w-full h-14 rounded-full bg-gradient-to-r from-purple-600 to-blue-500 text-white text-xl font-semibold tracking-wide transition-all hover:bg-gradient-to-l"
+              >
+                Book Now
+              </button>
+              {message && (
+                <div className="mt-6 text-sm text-red-500">{message}</div>
+              )}
+            </div>
+          </form>
+        </div>
+      </Section>
+    </>
+  );
+};
+
+export default Book;

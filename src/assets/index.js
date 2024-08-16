@@ -77,7 +77,9 @@ import benefiteImg6 from "./benefits/img-6.jpg"
 import canteenmp4 from "../assets/benefits/canteen.mp4"
 
 
-
+import thankyou from "./hero/thankyou.jpg";
+import thankyou1 from "./hero/thankyou1.jpg";
+import error404 from "./hero/error404.jpg";
 import discordBlack from "./socials/discord.svg";
 import facebook from "./socials/facebook.svg";
 import instagram from "./socials/instagram.svg";
@@ -92,9 +94,32 @@ import tennis from "./hero/balls/tennis.png"
 import cricketball from "./hero/balls/cricketball.png"
 import basketball from "./hero/balls/basketball.png"
 import football from "./hero/balls/football.png"
-import bat from "./hero/balls/bat.png"
+import fireBall from "./collaboration/fireBall.png"
+import rugbee from "./collaboration/rugbee.png"
+
+import canteen from "./services/canteen.png"
+import changingRoom from "./services/changingRoom.png"
+import parking from "./services/parking.png"
+
+// sports
+import crickets from "./sports/cricket.png"
+import footballs from "./sports/football.png"
+import hockeys from "./sports/hockey.png"
+import kabaddis from "./sports/kabaddi.png"
 
 export {
+  crickets,
+  footballs,
+  hockeys,
+  kabaddis,
+  rugbee,
+  fireBall,
+  parking,
+  changingRoom,
+  canteen,
+  thankyou,
+  thankyou1,
+  error404,
   brainwave,
   check,
   check2,
@@ -176,5 +201,5 @@ export {
   cricketball,
   basketball,
   football,
-  bat,
+
 };

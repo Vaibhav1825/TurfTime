@@ -47,7 +47,12 @@ import {
   football,
   basketball,
   golfball,
-  bat
+  fireBall,
+  rugbee,
+  crickets,
+  footballs,
+  kabaddis,
+  hockeys,
 } from "../assets";
 
 export const navigation = [
@@ -58,8 +63,8 @@ export const navigation = [
   },
   {
     id: "1",
-    title: "Pricing",
-    url: "#pricing",
+    title: "Booking",
+    url: "/booking",
   },
   {
     id: "2",
@@ -69,18 +74,18 @@ export const navigation = [
   {
     id: "3",
     title: "sports",
-    url: "#roadmap",
+    url: "/sports",
   },
   {
     id: "4",
     title: "New account",
-    url: "#signup",
+    url: "/registration",
     onlyMobile: true,
   },
   {
     id: "5",
     title: "Sign in",
-    url: "#login",
+    url: "/signin",
     onlyMobile: true,
   },
 ];
@@ -92,9 +97,9 @@ export const notificationImages = [notification4, notification3, notification2];
 export const companyLogos = [yourlogo, yourlogo, yourlogo, yourlogo, yourlogo];
 
 export const brainwaveServices = [
-  "Photo generating",
-  "Photo enhance",
-  "Seamless Integration",
+  "Comfortable seating area for players and spectators",
+  "Easy ordering system (e.g. online, mobile app, or at the counter)",
+  "Clean and sanitized food preparation and serving areas",
 ];
 
 export const brainwaveServicesIcons = [
@@ -108,57 +113,55 @@ export const brainwaveServicesIcons = [
 export const roadmap = [
   {
     id: "0",
-    title: "Voice recognition",
-    text: "Enable the chatbot to understand and respond to voice commands, making it easier for users to interact with the app hands-free.",
-    date: "May 2023",
-    status: "done",
+    title: "Cricket",
+    text: "Step onto the Pitch and Unleash Your Inner Cricketer! Our cricket nets are designed to provide a safe and challenging practice environment, with sturdy frames and high-quality netting to contain even the most powerful shots.",
     imageUrl: roadmap1,
     colorful: true,
   },
   {
     id: "1",
-    title: "Gamification",
-    text: "Add game-like elements, such as badges or leaderboards, to incentivize users to engage with the chatbot more frequently.",
-    date: "May 2023",
+    title: "Football",
+    text: "Kick Off Your Game on Our Top-Tier Pitch! Ideal for training, leagues, tournaments, and pick-up games. Get ready to score big on our world-class football pitch!",
     status: "progress",
     imageUrl: roadmap2,
   },
   {
     id: "2",
-    title: "Chatbot customization",
-    text: "Allow users to customize the chatbot's appearance and behavior, making it more engaging and fun to interact with.",
-    date: "May 2023",
+    title: "Badminton",
+    text: "Smash Your Way to Fun on Our Courts! Perfect for casual play, training, and tournaments.",
     status: "done",
     imageUrl: roadmap3,
   },
   {
     id: "3",
-    title: "Integration with APIs",
-    text: "Allow the chatbot to access external data sources, such as weather APIs or news APIs, to provide more relevant recommendations.",
-    date: "May 2023",
+    title: "Hockey",
+    text: "Stick Handle Your Way to Fun on Our Rink! So, lace up your skates, grab your stick, and get ready to experience the rush of hockey – the fastest game on ice!",
     status: "progress",
     imageUrl: roadmap4,
+    colorful: true,
   },
 ];
 
-export const collabText =
-  "With smart automation and top-notch security, it's the perfect solution for teams looking to work smarter.";
+export const collabText1 = "Improves Mental Health : Outdoor games reduce stress and anxiety by releasing endorphins, improving mood and mental well-being."
+export const collabText2 = " Enhances Cognitive Function : Outdoor games improve cognitive function, boosting memory, attention, and spatial awareness through problem-solving and critical thinking."
+export const collabText3 = "Boosts Physical Fitness : Outdoor games provide regular exercise, improving cardiovascular health, building strength, and increasing flexibility."
+
 
 export const collabContent = [
   {
     id: "0",
     // title: "Seamless Integration",
-    text: collabText,
+    text: collabText1,
   },
   {
     id: "1",
     // title: "Smart Automation",
-    text: collabText,
+    text: collabText2,
   },
   {
     id: "2",
     // title: "Top-notch Security",
-    text: collabText,
+    text: collabText3,
   },
 ];
 
@@ -208,52 +211,16 @@ export const collabApps = [
   {
     id: "6",
     title: "Framer",
-    icon: bat,
+    icon: fireBall,
     width: 26,
     height: 34,
   },
   {
     id: "7",
     title: "Raindrop",
-    icon: raindrop,
+    icon: rugbee,
     width: 38,
     height: 32,
-  },
-];
-
-export const pricing = [
-  {
-    id: "0",
-    title: "Basic",
-    description: "AI chatbot, personalized recommendations",
-    price: "0",
-    features: [
-      "An AI chatbot that can understand your queries",
-      "Personalized recommendations based on your preferences",
-      "Ability to explore the app and its features without any cost",
-    ],
-  },
-  {
-    id: "1",
-    title: "Premium",
-    description: "Advanced AI chatbot, priority support, analytics dashboard",
-    price: "9.99",
-    features: [
-      "An advanced AI chatbot that can understand complex queries",
-      "An analytics dashboard to track your conversations",
-      "Priority support to solve issues quickly",
-    ],
-  },
-  {
-    id: "2",
-    title: "Enterprise",
-    description: "Custom AI chatbot, advanced analytics, dedicated account",
-    price: null,
-    features: [
-      "An AI chatbot that can understand your queries",
-      "Personalized recommendations based on your preferences",
-      "Ability to explore the app and its features without any cost",
-    ],
   },
 ];
 
@@ -310,6 +277,35 @@ export const benefits = [
   },
 ];
 
+
+export const sportsDetails = [
+  {
+    id: 1,
+    title: "Football",
+    description: "Experience the thrill of football with our top-notch facilities and equipment.",
+    imageUrl: footballs // Replace with actual image path
+  },
+  {
+    id: 2,
+    title: "Kabaddi",
+    description: "Our Kabaddi court is built to professional standards, offering the perfect surface for intense gameplay.",
+    imageUrl: kabaddis // Replace with actual image path
+  },
+  {
+    id: 3,
+    title: "Hockey",
+    description: "Play hockey on our well-maintained courts, suitable for both recreational and competitive play.",
+    imageUrl: hockeys // Replace with actual image path
+  },
+  {
+    id: 4,
+    title: "Cricket",
+    description: "Step up to the crease and book your cricket turf today for a match-winning experience!",
+    imageUrl: crickets // Replace with actual image path
+  }
+];
+
+
 export const socials = [
   {
     id: "0",
@@ -341,4 +337,7 @@ export const socials = [
     iconUrl: facebook,
     url: "#",
   },
+
+ 
 ];
+
